@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudTentO — AI Operating System for Event Infrastructure</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Sora', sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    .hero-grad {
+      background: radial-gradient(ellipse at 20% 50%, #1e3a8a 0%, #0f172a 70%);
+    }
+    .accent { color: #f97316; }
+    .accent-bg { background: #f97316; }
+    .accent-border { border-color: #f97316; }
+    .accent-glow { text-shadow: 0 0 40px rgba(249,115,22,0.3); }
+
+    .glass-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .glass-card-dark {
+      background: rgba(15,23,42,0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #f97316;
+      background: rgba(249,115,22,0.12);
+      border: 1px solid rgba(249,115,22,0.2);
+      padding: 4px 16px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .animate-pulse-slow {
+      animation: pulseSlow 4s ease-in-out infinite;
+    }
+    @keyframes pulseSlow {
+      0%,100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .counter-number {
+      font-family: 'Sora', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .workflow-arrow {
+      display: inline-block;
+      animation: arrowPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes arrowPulse {
+      0%,100% { transform: translateX(0); opacity: 1; }
+      50% { transform: translateX(8px); opacity: 0.6; }
+    }
+
+    .agent-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .agent-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(249,115,22,0.15);
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f97316;
+      border: 3px solid #1e293b;
+      flex-shrink: 0;
+    }
+
+    .stat-card {
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: scale(1.05);
+    }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .demo-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .nav-scrolled {
+      background: rgba(15,23,42,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .counter-number { font-size: 2.5rem; }
+      .demo-iframe { height: 400px; }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100">
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="mainNav" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center gap-2">
+        <span class="font-display text-2xl font-extrabold tracking-tight">
+          <span class="accent">Cloud</span><span class="text-white">TentO</span>
+        </span>
+        <span class="hidden sm:inline-block text-[9px] font-black uppercase tracking-widest text-orange-400 bg-orange-500/20 px-2 py-0.5 rounded border border-orange-500/30">AI OS</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#demo" class="hidden md:block text-sm text-slate-300 hover:text-white transition">Demo</a>
+        <a href="#traction" class="hidden md:block text-sm text-slate-300 hover:text-white transition">Traction</a>
+        <a href="#investor" class="hidden md:block text-sm text-slate-300 hover:text-white transition">Invest</a>
+        <a href="#investor" class="accent-bg text-white text-sm font-bold px-5 py-2 rounded-xl hover:opacity-90 transition shadow-lg shadow-orange-500/25">
+          <i class="fa-regular fa-calendar-check mr-1.5"></i> Meet
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: HERO                                              -->
+<!-- ============================================================ -->
+<section class="hero-grad min-h-screen flex items-center relative overflow-hidden pt-20">
+  <!-- Animated network background -->
+  <canvas id="networkCanvas" class="absolute inset-0 w-full h-full opacity-40"></canvas>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full border border-orange-500/20 mb-6">
+          <i class="fa-solid fa-robot"></i> AI Operating System
+        </div>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+          Digitizing the World's Largest
+          <span class="accent accent-glow">Unorganized Event Economy</span>
+        </h1>
+        <p class="text-lg text-slate-300 mt-6 max-w-xl leading-relaxed">
+          AI Agents · RAG · Marketplace · ERP — all in one platform.
+          From ₹2 Crore seed to build the autonomous event OS.
+        </p>
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="#demo" class="accent-bg text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-orange-500/25 hover:opacity-90 transition flex items-center gap-2">
+            <i class="fa-regular fa-circle-play"></i> Watch Demo
+          </a>
+          <a href="#investor" class="glass-card text-white font-medium px-8 py-3.5 rounded-xl transition hover:bg-white/10 flex items-center gap-2">
+            <i class="fa-regular fa-file-pdf"></i> Download Pitch Deck
+          </a>
+          <a href="#investor" class="border border-slate-600 text-slate-300 font-medium px-8 py-3.5 rounded-xl transition hover:border-orange-500 hover:text-white flex items-center gap-2">
+            <i class="fa-regular fa-calendar-check"></i> Book Investor Meeting
+          </a>
+        </div>
+        <div class="flex flex-wrap gap-6 mt-8 text-sm text-slate-400">
+          <span><i class="fa-solid fa-check-circle text-emerald-400 mr-1.5"></i> Working MVP</span>
+          <span><i class="fa-solid fa-check-circle text-emerald-400 mr-1.5"></i> 36+ Vendors</span>
+          <span><i class="fa-solid fa-check-circle text-emerald-400 mr-1.5"></i> Hyderabad Live</span>
+          <span><i class="fa-solid fa-check-circle text-emerald-400 mr-1.5"></i> AI-Powered</span>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <div class="glass-card p-8 rounded-3xl max-w-sm w-full animate-float">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 accent-bg rounded-2xl flex items-center justify-center text-2xl">🤖</div>
+            <div>
+              <p class="font-bold text-white">CloudTentO AI</p>
+              <p class="text-xs text-slate-400">v2.0 · Active</p>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+              <span class="text-sm">Marketplace</span>
+              <span class="text-emerald-400 text-sm font-bold">● Live</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+              <span class="text-sm">Vendor ERP</span>
+              <span class="text-emerald-400 text-sm font-bold">● Live</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+              <span class="text-sm">AI Agents</span>
+              <span class="text-yellow-400 text-sm font-bold">◉ Training</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+              <span class="text-sm">RAG Engine</span>
+              <span class="text-emerald-400 text-sm font-bold">● Live</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+              <span class="text-sm">Payments</span>
+              <span class="text-slate-500 text-sm font-bold">○ Coming</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: TRUSTED BY                                        -->
+<!-- ============================================================ -->
+<section class="py-12 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-slate-500 text-sm font-medium tracking-widest uppercase mb-8">Trusted By</p>
+    <div class="flex flex-wrap justify-center items-center gap-8 sm:gap-16">
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-city text-2xl accent"></i> Hyderabad</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-store text-2xl accent"></i> Vendor Network</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-microchip text-2xl accent"></i> AI Powered</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-mobile-screen-button text-2xl accent"></i> Progressive Web App</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-location-dot text-2xl accent"></i> Google Maps</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp text-2xl accent"></i> WhatsApp</div>
+      <div class="flex items-center gap-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-cloud text-2xl accent"></i> Cloud</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: INDUSTRY PROBLEM                                  -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">The Problem</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">The Event Industry is Broken</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">Traditional workflow is manual, fragmented, and lacks any digital infrastructure.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="bg-slate-900/50 rounded-2xl p-8 border border-slate-700">
+          <p class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Traditional Workflow</p>
+          <div class="space-y-3">
+            <div class="flex items-center gap-4 p-3 bg-slate-800 rounded-xl">
+              <span class="text-2xl">👤</span>
+              <span class="text-white font-medium">Customer</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800/50 rounded-xl ml-8">
+              <span class="text-2xl">📞</span>
+              <span class="text-white font-medium">Phone</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800 rounded-xl ml-16">
+              <span class="text-2xl">🏪</span>
+              <span class="text-white font-medium">Vendor</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800/50 rounded-xl ml-24">
+              <span class="text-2xl">💬</span>
+              <span class="text-white font-medium">WhatsApp</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800 rounded-xl ml-32">
+              <span class="text-2xl">📓</span>
+              <span class="text-white font-medium">Notebook</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800/50 rounded-xl ml-40">
+              <span class="text-2xl">📊</span>
+              <span class="text-white font-medium">Excel</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800 rounded-xl ml-48">
+              <span class="text-2xl">📄</span>
+              <span class="text-white font-medium">Quotation</span>
+              <span class="ml-auto text-slate-500">↓</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-slate-800/50 rounded-xl ml-56">
+              <span class="text-2xl">✅</span>
+              <span class="text-white font-medium">Booking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <span class="text-red-500 text-xl">❌</span>
+            <div><p class="font-semibold text-white">Manual</p><p class="text-sm text-slate-400">Every step requires human intervention</p></div>
+          </div>
+          <div class="flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <span class="text-red-500 text-xl">❌</span>
+            <div><p class="font-semibold text-white">Slow</p><p class="text-sm text-slate-400">Days to get a quote, weeks to book</p></div>
+          </div>
+          <div class="flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <span class="text-red-500 text-xl">❌</span>
+            <div><p class="font-semibold text-white">No ERP</p><p class="text-sm text-slate-400">No vendor management, no inventory tracking</p></div>
+          </div>
+          <div class="flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <span class="text-red-500 text-xl">❌</span>
+            <div><p class="font-semibold text-white">No Inventory</p><p class="text-sm text-slate-400">Vendors don't know what they have</p></div>
+          </div>
+          <div class="flex items-start gap-4 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+            <span class="text-red-500 text-xl">❌</span>
+            <div><p class="font-semibold text-white">No Analytics</p><p class="text-sm text-slate-400">No data on demand, pricing, or performance</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: SOLUTION                                          -->
+<!-- ============================================================ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">The Solution</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">CloudTentO — The AI Operating System</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">From customer to booking to logistics — all automated, all in one place.</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl p-8 border border-slate-700">
+      <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
+        <div class="flex items-center gap-2 p-3 bg-slate-800 rounded-xl"><span class="text-2xl">👤</span> Customer</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-orange-500/20 rounded-xl border border-orange-500/30"><span class="text-2xl">☁️</span> CloudTentO</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-purple-500/20 rounded-xl border border-purple-500/30"><span class="text-2xl">🤖</span> AI Agents</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-blue-500/20 rounded-xl border border-blue-500/30"><span class="text-2xl">🧠</span> RAG</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-emerald-500/20 rounded-xl border border-emerald-500/30"><span class="text-2xl">📦</span> Inventory</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-yellow-500/20 rounded-xl border border-yellow-500/30"><span class="text-2xl">💰</span> Pricing</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-pink-500/20 rounded-xl border border-pink-500/30"><span class="text-2xl">📋</span> Booking</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-indigo-500/20 rounded-xl border border-indigo-500/30"><span class="text-2xl">🏦</span> Finance</div>
+        <span class="text-orange-500 text-xl workflow-arrow">→</span>
+        <div class="flex items-center gap-2 p-3 bg-cyan-500/20 rounded-xl border border-cyan-500/30"><span class="text-2xl">🚚</span> Logistics</div>
+      </div>
+      <div class="mt-6 text-center text-sm text-slate-400">
+        <span class="inline-block px-4 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-400">
+          <i class="fa-solid fa-check-circle mr-1.5"></i> Fully automated · Zero touch
+        </span>
+      </div>
+    </div>
+
+    <!-- Beautiful SVG animation (CSS animated) -->
+    <div class="mt-10 flex justify-center">
+      <svg width="200" height="80" viewBox="0 0 200 80" class="animate-pulse-slow">
+        <rect x="0" y="20" width="40" height="40" rx="8" fill="#f97316" opacity="0.8" />
+        <rect x="50" y="20" width="40" height="40" rx="8" fill="#8b5cf6" opacity="0.8" />
+        <rect x="100" y="20" width="40" height="40" rx="8" fill="#3b82f6" opacity="0.8" />
+        <rect x="150" y="20" width="40" height="40" rx="8" fill="#10b981" opacity="0.8" />
+        <circle cx="20" cy="70" r="4" fill="#f97316" />
+        <circle cx="70" cy="70" r="4" fill="#8b5cf6" />
+        <circle cx="120" cy="70" r="4" fill="#3b82f6" />
+        <circle cx="170" cy="70" r="4" fill="#10b981" />
+        <line x1="40" y1="40" x2="50" y2="40" stroke="#f97316" stroke-width="2" stroke-dasharray="4,4">
+          <animate attributeName="stroke-dashoffset" from="0" to="8" dur="1s" repeatCount="indefinite" />
+        </line>
+        <line x1="90" y1="40" x2="100" y2="40" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4">
+          <animate attributeName="stroke-dashoffset" from="0" to="8" dur="1s" repeatCount="indefinite" />
+        </line>
+        <line x1="140" y1="40" x2="150" y2="40" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,4">
+          <animate attributeName="stroke-dashoffset" from="0" to="8" dur="1s" repeatCount="indefinite" />
+        </line>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: WHY NOW                                           -->
+<!-- ============================================================ -->
+<section class="py-16 bg-slate-800/20 border-y border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="section-label">Why Now</span>
+      <h2 class="font-display text-3xl font-bold text-white mt-4">The Perfect Timing</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-4xl mb-3">🧠</div>
+        <h4 class="font-bold text-white">AI is Mature</h4>
+        <p class="text-sm text-slate-400 mt-1">LLMs, RAG, and agents are production-ready</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-4xl mb-3">📱</div>
+        <h4 class="font-bold text-white">SMEs Adopting Digital</h4>
+        <p class="text-sm text-slate-400 mt-1">Small vendors are ready for digital tools</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-4xl mb-3">📈</div>
+        <h4 class="font-bold text-white">Rising Demand</h4>
+        <p class="text-sm text-slate-400 mt-1">Online event services growing 25% YoY</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-4xl mb-3">🌍</div>
+        <h4 class="font-bold text-white">Large Fragmented Market</h4>
+        <p class="text-sm text-slate-400 mt-1">₹50,000Cr+ unorganized opportunity</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: PRODUCT DEMO                                      -->
+<!-- ============================================================ -->
+<section id="demo" class="py-20 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Live Demo</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">See CloudTentO in Action</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">This is the real MVP — not a screenshot, not a mockup.</p>
+    </div>
+    <div class="bg-slate-800/30 rounded-3xl p-4 border border-slate-700">
+      <iframe
+        class="demo-iframe"
+        src="https://nbraju.github.io/TentHouseS-/"
+        title="CloudTentO Live Demo"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+</section>
+<!-- ============================================================ -->
+<!-- SECTION 7: PLATFORM                                          -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Platform</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Everything You Need</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">A complete ecosystem for event infrastructure.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">🏪</div>
+        <h4 class="font-bold text-white text-sm">Marketplace</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">📊</div>
+        <h4 class="font-bold text-white text-sm">Vendor ERP</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">📦</div>
+        <h4 class="font-bold text-white text-sm">Inventory</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">📋</div>
+        <h4 class="font-bold text-white text-sm">Booking Engine</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">👥</div>
+        <h4 class="font-bold text-white text-sm">CRM</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">🤖</div>
+        <h4 class="font-bold text-white text-sm">AI</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">💳</div>
+        <h4 class="font-bold text-white text-sm">Payments</h4>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700 hover:border-orange-500/30 transition">
+        <div class="text-3xl mb-3">📈</div>
+        <h4 class="font-bold text-white text-sm">Analytics</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: AI EMPLOYEES                                      -->
+<!-- ============================================================ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">AI Employees</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Your AI Workforce</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">Nine specialized AI agents working 24/7 to automate your event business.</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">📋</div>
+        <h4 class="font-bold text-white text-sm">Planning Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Event planning &amp; scheduling</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">📄</div>
+        <h4 class="font-bold text-white text-sm">Quotation Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Instant quotes &amp; proposals</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">🏪</div>
+        <h4 class="font-bold text-white text-sm">Vendor Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Vendor matching &amp; onboarding</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">💬</div>
+        <h4 class="font-bold text-white text-sm">Sales Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Lead qualification &amp; follow-up</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">📦</div>
+        <h4 class="font-bold text-white text-sm">Inventory Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Real-time inventory tracking</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">🚚</div>
+        <h4 class="font-bold text-white text-sm">Logistics Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Delivery &amp; setup coordination</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">🏦</div>
+        <h4 class="font-bold text-white text-sm">Finance Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Invoicing &amp; reconciliation</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">🛟</div>
+        <h4 class="font-bold text-white text-sm">Support Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Customer &amp; vendor support</p>
+      </div>
+      <div class="agent-card bg-slate-800/50 rounded-2xl p-4 text-center border border-slate-700">
+        <div class="text-3xl mb-2">📈</div>
+        <h4 class="font-bold text-white text-sm">Analytics Agent</h4>
+        <p class="text-xs text-slate-400 mt-1">Business intelligence &amp; insights</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: RAG                                               -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">RAG Engine</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Retrieval-Augmented Generation</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">Ground-truth answers from your business data — no hallucinations.</p>
+    </div>
+    <div class="bg-slate-900/50 rounded-3xl p-8 border border-slate-700">
+      <div class="flex flex-col items-center gap-4">
+        <div class="flex items-center gap-4 text-sm">
+          <span class="bg-slate-800 px-4 py-2 rounded-xl">👤 User</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-slate-800 px-4 py-2 rounded-xl">❓ Question</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-purple-500/20 px-4 py-2 rounded-xl border border-purple-500/30">🔍 Retriever</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-blue-500/20 px-4 py-2 rounded-xl border border-blue-500/30">🗄️ Vector DB</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-emerald-500/20 px-4 py-2 rounded-xl border border-emerald-500/30">🧠 Knowledge</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-orange-500/20 px-4 py-2 rounded-xl border border-orange-500/30">🤖 LLM</span>
+          <span class="text-orange-500">→</span>
+          <span class="bg-slate-800 px-4 py-2 rounded-xl">💡 Answer</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3 mt-4 text-xs text-slate-400">
+          <span class="px-3 py-1 bg-slate-800 rounded-full">📊 Vendor DB</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">📦 Inventory DB</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">💰 Pricing DB</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">📄 Contracts</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">📋 SOP</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">📖 Bookings</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">⭐ Reviews</span>
+          <span class="px-3 py-1 bg-slate-800 rounded-full">🖼️ Images</span>
+        </div>
+        <!-- Animated flow -->
+        <div class="mt-4 w-full max-w-2xl h-1 bg-slate-700 rounded-full overflow-hidden">
+          <div class="h-full w-1/3 bg-gradient-to-r from-orange-500 to-purple-500 rounded-full animate-pulse-slow" style="width:60%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: AI ARCHITECTURE                                  -->
+<!-- ============================================================ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Architecture</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">AI-First Technology Stack</h2>
+    </div>
+    <div class="bg-slate-800/30 rounded-3xl p-8 border border-slate-700">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">Frontend</p>
+          <p class="text-slate-400 mt-1">React · PWA · Tailwind</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">↓</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">API Gateway</p>
+          <p class="text-slate-400 mt-1">FastAPI · WebSocket</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 col-span-3">
+          <p class="font-bold text-white text-center">Agent Orchestrator</p>
+          <div class="flex flex-wrap justify-center gap-2 mt-2">
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Planner</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Inventory</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Pricing</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Finance</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Support</span>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">RAG</p>
+          <p class="text-slate-400 mt-1">LangChain · LlamaIndex</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">Vector DB</p>
+          <p class="text-slate-400 mt-1">Qdrant · Pinecone</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <p class="font-bold text-white">Database</p>
+          <p class="text-slate-400 mt-1">Postgres · Redis</p>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 col-span-3 text-center">
+          <p class="font-bold text-white">☁️ Cloud Infrastructure</p>
+          <p class="text-slate-400 mt-1">AWS · Docker · Kubernetes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: MARKETPLACE (Expansion)                          -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Marketplace</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Expansion Roadmap</h2>
+    </div>
+    <div class="flex flex-col items-center">
+      <!-- Simplified India map as SVG -->
+      <svg viewBox="0 0 400 500" class="w-64 md:w-96">
+        <path d="M200,50 L250,80 L270,130 L260,180 L300,220 L280,280 L320,330 L300,380 L250,400 L200,420 L150,400 L100,380 L80,330 L120,280 L100,220 L140,180 L130,130 L150,80 L200,50Z"
+          fill="none" stroke="#334155" stroke-width="2" />
+        <!-- Hyderabad -->
+        <circle cx="200" cy="200" r="12" fill="#f97316" class="animate-pulse" />
+        <text x="190" y="230" fill="#f97316" font-size="12" font-weight="bold">Hyderabad</text>
+        <!-- Expansion arrows -->
+        <path d="M200,200 L200,250" stroke="#f97316" stroke-width="2" stroke-dasharray="4,4" class="animate-pulse" />
+        <circle cx="200" cy="260" r="6" fill="#f59e0b" />
+        <text x="190" y="280" fill="#f59e0b" font-size="10">Telangana</text>
+        <path d="M200,260 L230,300" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4" />
+        <circle cx="235" cy="310" r="6" fill="#8b5cf6" />
+        <text x="225" y="330" fill="#8b5cf6" font-size="10">South India</text>
+        <path d="M235,310 L200,370" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4" />
+        <circle cx="195" cy="380" r="8" fill="#3b82f6" />
+        <text x="180" y="405" fill="#3b82f6" font-size="10">India</text>
+        <path d="M195,380 L100,420" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,4" />
+        <circle cx="90" cy="430" r="8" fill="#10b981" />
+        <text x="60" y="455" fill="#10b981" font-size="10">Middle East</text>
+      </svg>
+      <div class="flex flex-wrap justify-center gap-4 mt-6 text-sm text-slate-400">
+        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span> Hyderabad</span>
+        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Telangana</span>
+        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-purple-500"></span> South India</span>
+        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-500"></span> India</span>
+        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Middle East</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: TRACTION                                         -->
+<!-- ============================================================ -->
+<section id="traction" class="py-20 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Traction</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Live &amp; Growing</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">Real numbers from our Hyderabad pilot.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="36">0</div>
+        <p class="text-slate-400 text-sm mt-1">Vendors</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="142">0</div>
+        <p class="text-slate-400 text-sm mt-1">Bookings</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="89">0</div>
+        <p class="text-slate-400 text-sm mt-1">Products</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="127">0</div>
+        <p class="text-slate-400 text-sm mt-1">Users</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="3">0</div>
+        <p class="text-slate-400 text-sm mt-1">Cities</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="87">0</div>
+        <p class="text-slate-400 text-sm mt-1">Quotations</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="24.5">0</div>
+        <p class="text-slate-400 text-sm mt-1">GMV (₹L)</p>
+      </div>
+      <div class="stat-card bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="counter-number" data-target="34">0</div>
+        <p class="text-slate-400 text-sm mt-1">Repeat Users (%)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: MARKET                                           -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Market</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Total Addressable Market</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-slate-800/50 rounded-2xl p-8 text-center border border-slate-700">
+        <div class="text-5xl font-display font-bold text-white">₹50,000Cr</div>
+        <p class="text-sm text-slate-400 mt-2">TAM</p>
+        <div class="w-full bg-slate-700 rounded-full h-2 mt-4">
+          <div class="bg-orange-500 h-2 rounded-full" style="width:100%"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Total addressable market</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-8 text-center border border-slate-700">
+        <div class="text-5xl font-display font-bold text-white">₹5,000Cr</div>
+        <p class="text-sm text-slate-400 mt-2">SAM</p>
+        <div class="w-full bg-slate-700 rounded-full h-2 mt-4">
+          <div class="bg-amber-500 h-2 rounded-full" style="width:10%"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Serviceable addressable market</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-8 text-center border border-slate-700">
+        <div class="text-5xl font-display font-bold text-white">₹500Cr</div>
+        <p class="text-sm text-slate-400 mt-2">SOM</p>
+        <div class="w-full bg-slate-700 rounded-full h-2 mt-4">
+          <div class="bg-emerald-500 h-2 rounded-full" style="width:1%"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Serviceable obtainable market</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 14: COMPETITION                                      -->
+<!-- ============================================================ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Competition</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Why CloudTentO Wins</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-700">
+            <th class="text-left py-3 px-4 text-slate-400 font-bold">Feature</th>
+            <th class="text-center py-3 px-4 text-orange-500 font-bold">CloudTentO</th>
+            <th class="text-center py-3 px-4 text-slate-500">JustDial</th>
+            <th class="text-center py-3 px-4 text-slate-500">IndiaMART</th>
+            <th class="text-center py-3 px-4 text-slate-500">WeddingBazaar</th>
+            <th class="text-center py-3 px-4 text-slate-500">ERP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-800/50">
+            <td class="py-3 px-4 text-white">AI Agents</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+          </tr>
+          <tr class="border-b border-slate-800/50">
+            <td class="py-3 px-4 text-white">RAG Engine</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+          </tr>
+          <tr class="border-b border-slate-800/50">
+            <td class="py-3 px-4 text-white">Inventory Management</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">✅</td>
+          </tr>
+          <tr class="border-b border-slate-800/50">
+            <td class="py-3 px-4 text-white">Vendor ERP</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">✅</td>
+          </tr>
+          <tr class="border-b border-slate-800/50">
+            <td class="py-3 px-4 text-white">Booking Engine</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-white">Analytics</td>
+            <td class="text-center text-emerald-400 py-3 px-4">✅</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">❌</td>
+            <td class="text-center text-slate-600 py-3 px-4">✅</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 15: BUSINESS MODEL                                   -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Business Model</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Multiple Revenue Streams</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">🏪</div>
+        <h4 class="font-bold text-white text-sm">Marketplace</h4>
+        <p class="text-xs text-slate-400 mt-1">Commission on bookings</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">📋</div>
+        <h4 class="font-bold text-white text-sm">Subscriptions</h4>
+        <p class="text-xs text-slate-400 mt-1">Monthly vendor plans</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">📊</div>
+        <h4 class="font-bold text-white text-sm">Vendor ERP</h4>
+        <p class="text-xs text-slate-400 mt-1">SaaS for tent houses</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">🤖</div>
+        <h4 class="font-bold text-white text-sm">AI</h4>
+        <p class="text-xs text-slate-400 mt-1">AI agent subscriptions</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">📈</div>
+        <h4 class="font-bold text-white text-sm">Analytics</h4>
+        <p class="text-xs text-slate-400 mt-1">Business intelligence</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">🏦</div>
+        <h4 class="font-bold text-white text-sm">Financial Services</h4>
+        <p class="text-xs text-slate-400 mt-1">Lending, insurance</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">🛡️</div>
+        <h4 class="font-bold text-white text-sm">Insurance</h4>
+        <p class="text-xs text-slate-400 mt-1">Event insurance</p>
+      </div>
+      <div class="bg-slate-800/50 rounded-2xl p-6 text-center border border-slate-700">
+        <div class="text-3xl mb-3">🔌</div>
+        <h4 class="font-bold text-white text-sm">API</h4>
+        <p class="text-xs text-slate-400 mt-1">Third-party integrations</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 16: TECHNOLOGY LOGOS                                  -->
+<!-- ============================================================ -->
+<section class="py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="section-label">Technology</span>
+      <h2 class="font-display text-2xl font-bold text-white mt-4">Powered By Industry Leaders</h2>
+    </div>
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 text-slate-400">
+      <span class="text-2xl font-bold text-white/80">OpenAI</span>
+      <span class="text-2xl font-bold text-white/80">Anthropic</span>
+      <span class="text-2xl font-bold text-white/80">Gemini</span>
+      <span class="text-2xl font-bold text-white/80">Llama</span>
+      <span class="text-2xl font-bold text-white/80">Qdrant</span>
+      <span class="text-2xl font-bold text-white/80">Postgres</span>
+      <span class="text-2xl font-bold text-white/80">Redis</span>
+      <span class="text-2xl font-bold text-white/80">Docker</span>
+      <span class="text-2xl font-bold text-white/80">PWA</span>
+      <span class="text-2xl font-bold text-white/80">FastAPI</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 17: ROADMAP                                          -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Roadmap</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Our Journey Ahead</h2>
+    </div>
+    <div class="relative">
+      <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-slate-700"></div>
+      <div class="space-y-8">
+        <div class="flex items-center justify-end">
+          <div class="w-5/12 text-right pr-8">
+            <span class="text-xs text-orange-500 font-bold">Phase 1</span>
+            <h4 class="font-bold text-white">Marketplace</h4>
+            <p class="text-sm text-slate-400">Vendor onboarding, discovery, enquiry</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="w-5/12"></div>
+        </div>
+        <div class="flex items-center justify-start">
+          <div class="w-5/12"></div>
+          <div class="timeline-dot"></div>
+          <div class="w-5/12 pl-8">
+            <span class="text-xs text-orange-500 font-bold">Phase 2</span>
+            <h4 class="font-bold text-white">ERP</h4>
+            <p class="text-sm text-slate-400">Inventory, booking, vendor management</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-end">
+          <div class="w-5/12 text-right pr-8">
+            <span class="text-xs text-orange-500 font-bold">Phase 3</span>
+            <h4 class="font-bold text-white">AI Agents</h4>
+            <p class="text-sm text-slate-400">Planning, quoting, sales automation</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="w-5/12"></div>
+        </div>
+        <div class="flex items-center justify-start">
+          <div class="w-5/12"></div>
+          <div class="timeline-dot"></div>
+          <div class="w-5/12 pl-8">
+            <span class="text-xs text-orange-500 font-bold">Phase 4</span>
+            <h4 class="font-bold text-white">Knowledge Graph</h4>
+            <p class="text-sm text-slate-400">RAG, semantic search, recommendations</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-end">
+          <div class="w-5/12 text-right pr-8">
+            <span class="text-xs text-orange-500 font-bold">Phase 5</span>
+            <h4 class="font-bold text-white">Autonomous Event OS</h4>
+            <p class="text-sm text-slate-400">End-to-end automation, zero-touch</p>
+          </div>
+          <div class="timeline-dot"></div>
+          <div class="w-5/12"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 18: FUNDING                                          -->
+<!-- ============================================================ -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Funding</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Current Raise</h2>
+      <div class="text-6xl font-display font-bold text-orange-500 mt-4">₹2 Cr</div>
+      <p class="text-slate-400">Seed Round</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-slate-800/30 rounded-2xl p-8 border border-slate-700">
+        <h3 class="font-bold text-white text-lg mb-4">Use of Funds</h3>
+        <div class="space-y-4">
+          <div><div class="flex justify-between text-sm"><span class="text-slate-300">Hiring</span><span class="text-white font-bold">35%</span></div><div class="w-full bg-slate-700 rounded-full h-2 mt-1"><div class="bg-orange-500 h-2 rounded-full" style="width:35%"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span class="text-slate-300">AI Development</span><span class="text-white font-bold">30%</span></div><div class="w-full bg-slate-700 rounded-full h-2 mt-1"><div class="bg-purple-500 h-2 rounded-full" style="width:30%"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span class="text-slate-300">Marketing</span><span class="text-white font-bold">20%</span></div><div class="w-full bg-slate-700 rounded-full h-2 mt-1"><div class="bg-blue-500 h-2 rounded-full" style="width:20%"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span class="text-slate-300">Expansion</span><span class="text-white font-bold">10%</span></div><div class="w-full bg-slate-700 rounded-full h-2 mt-1"><div class="bg-emerald-500 h-2 rounded-full" style="width:10%"></div></div></div>
+          <div><div class="flex justify-between text-sm"><span class="text-slate-300">Infrastructure</span><span class="text-white font-bold">5%</span></div><div class="w-full bg-slate-700 rounded-full h-2 mt-1"><div class="bg-amber-500 h-2 rounded-full" style="width:5%"></div></div></div>
+        </div>
+      </div>
+      <div class="bg-slate-800/30 rounded-2xl p-8 border border-slate-700">
+        <h3 class="font-bold text-white text-lg mb-4">Key Milestones</h3>
+        <div class="space-y-4 text-sm">
+          <div class="flex items-start gap-3"><span class="text-emerald-400">✅</span><div><p class="text-white font-medium">Working MVP</p><p class="text-slate-400">36+ vendors, 142 bookings</p></div></div>
+          <div class="flex items-start gap-3"><span class="text-emerald-400">✅</span><div><p class="text-white font-medium">AI Agents (Pilot)</p><p class="text-slate-400">3 agents live, 6 in development</p></div></div>
+          <div class="flex items-start gap-3"><span class="text-yellow-400">🔄</span><div><p class="text-white font-medium">RAG Engine</p><p class="text-slate-400">Q2 2026 launch</p></div></div>
+          <div class="flex items-start gap-3"><span class="text-yellow-400">🔄</span><div><p class="text-white font-medium">Payments Integration</p><p class="text-slate-400">Q3 2026</p></div></div>
+          <div class="flex items-start gap-3"><span class="text-yellow-400">🔄</span><div><p class="text-white font-medium">Pan-India Expansion</p><p class="text-slate-400">Q4 2026</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 19: FOUNDER                                          -->
+<!-- ============================================================ -->
+<section class="py-20 bg-slate-800/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Founder</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Meet the Visionary</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-1">
+        <div class="bg-slate-800/50 rounded-2xl p-8 text-center border border-slate-700">
+          <div class="w-32 h-32 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 mx-auto flex items-center justify-center text-6xl text-white font-bold">NB</div>
+          <h3 class="text-xl font-bold text-white mt-4">N. B. Raju</h3>
+          <p class="text-sm text-slate-400">Founder &amp; CEO</p>
+          <p class="text-sm text-slate-400">nbraju@hotmail.com</p>
+          <div class="flex justify-center gap-3 mt-4">
+            <a href="https://linkedin.com" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-linkedin text-xl"></i></a>
+            <a href="https://github.com" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-github text-xl"></i></a>
+            <a href="https://wa.me/919948680017" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp text-xl"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-2 space-y-6">
+        <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+          <h4 class="font-bold text-white">Timeline</h4>
+          <div class="mt-3 space-y-2 text-sm">
+            <div class="flex items-center gap-3"><span class="text-orange-500 text-xs font-bold">2018</span><span class="text-slate-300">Started TentWala as a WhatsApp-based service</span></div>
+            <div class="flex items-center gap-3"><span class="text-orange-500 text-xs font-bold">2020</span><span class="text-slate-300">Built MVP with 50+ vendors in Hyderabad</span></div>
+            <div class="flex items-center gap-3"><span class="text-orange-500 text-xs font-bold">2022</span><span class="text-slate-300">Launched PWA with geo-fencing</span></div>
+            <div class="flex items-center gap-3"><span class="text-orange-500 text-xs font-bold">2024</span><span class="text-slate-300">Piloted AI agents with 3 live agents</span></div>
+            <div class="flex items-center gap-3"><span class="text-orange-500 text-xs font-bold">2026</span><span class="text-slate-300 font-bold">Raising ₹2 Cr Seed to build CloudTentO</span></div>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+          <h4 class="font-bold text-white">Mission</h4>
+          <p class="text-slate-300 mt-2">"To digitize the world's largest unorganized economy — event infrastructure — using AI, making it accessible to every vendor and every customer, from Hyderabad to the world."</p>
+        </div>
+        <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+          <h4 class="font-bold text-white">Experience</h4>
+          <div class="flex flex-wrap gap-2 mt-2 text-sm">
+            <span class="px-3 py-1 bg-slate-700 rounded-full">AI/ML</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full">Product Development</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full">Event Industry</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full">15+ Years</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full">Hyderabad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 20: BOOK INVESTOR MEETING                            -->
+<!-- ============================================================ -->
+<section id="investor" class="py-20 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="section-label">Get Involved</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-4">Book an Investor Meeting</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto mt-3">Let's build the future of event infrastructure together.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-slate-800/30 rounded-2xl p-8 border border-slate-700">
+        <h3 class="font-bold text-white text-lg mb-4">📅 Schedule a Call</h3>
+        <div class="space-y-4">
+          <a href="https://calendly.com" target="_blank" class="block w-full text-center accent-bg text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-lg shadow-orange-500/25">
+            <i class="fa-regular fa-calendar-check mr-2"></i> Book on Calendly
+          </a>
+          <a href="mailto:nbraju@hotmail.com" class="block w-full text-center border border-slate-600 text-slate-300 font-medium py-4 rounded-xl hover:border-orange-500 hover:text-white transition">
+            <i class="fa-regular fa-envelope mr-2"></i> nbraju@hotmail.com
+          </a>
+          <a href="https://linkedin.com" target="_blank" class="block w-full text-center border border-slate-600 text-slate-300 font-medium py-4 rounded-xl hover:border-orange-500 hover:text-white transition">
+            <i class="fa-brands fa-linkedin mr-2"></i> Connect on LinkedIn
+          </a>
+          <a href="#" class="block w-full text-center border border-slate-600 text-slate-300 font-medium py-4 rounded-xl hover:border-orange-500 hover:text-white transition">
+            <i class="fa-regular fa-file-pdf mr-2"></i> Download Pitch Deck
+          </a>
+          <a href="#" class="block w-full text-center border border-slate-600 text-slate-300 font-medium py-4 rounded-xl hover:border-orange-500 hover:text-white transition">
+            <i class="fa-regular fa-folder-open mr-2"></i> Access Data Room
+          </a>
+        </div>
+      </div>
+      <div class="bg-slate-800/30 rounded-2xl p-8 border border-slate-700 flex flex-col justify-center">
+        <div class="text-center">
+          <div class="text-6xl mb-4">🤝</div>
+          <h3 class="font-bold text-white text-xl">Let's Build the Future</h3>
+          <p class="text-slate-400 mt-2 text-sm max-w-sm mx-auto">CloudTentO is the AI operating system for event infrastructure. Join us in digitizing a ₹50,000Cr market.</p>
+          <div class="flex flex-wrap justify-center gap-3 mt-6">
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">₹2 Cr Seed</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">Working MVP</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">36+ Vendors</span>
+            <span class="px-3 py-1 bg-slate-700 rounded-full text-xs">AI-Powered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="py-8 border-t border-slate-800 text-center text-sm text-slate-500">
+  <div class="max-w-7xl mx-auto px-4">
+    <p class="font-display text-lg font-extrabold"><span class="accent">Cloud</span><span class="text-white">TentO</span></p>
+    <p class="mt-1">AI Operating System for Event Infrastructure</p>
+    <p class="mt-2 text-xs">© 2026 · nbraju@hotmail.com · +91 99486 80017</p>
+  </div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT                                                    -->
+<!-- ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ===== NAV SCROLL =====
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav-scrolled', window.scrollY > 50);
+  });
+
+  // ===== NETWORK CANVAS =====
+  const canvas = document.getElementById('networkCanvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const particles = [];
+    const numParticles = 80;
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      width = canvas.width = rect.width || window.innerWidth;
+      height = canvas.height = rect.height || window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 2 + 1
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(249,115,22,0.6)';
+        ctx.fill();
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = p.x - particles[j].x;
+          const dy = p.y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(249,115,22,${0.15 * (1 - dist/150)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  // ===== COUNTER ANIMATION (Intersection Observer) =====
+  const counters = document.querySelectorAll('.counter-number');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const duration = 2000;
+        const start = performance.now();
+        const isFloat = target % 1 !== 0;
+
+        function updateCounter(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * target;
+          el.textContent = isFloat ? current.toFixed(1) : Math.round(current);
+          if (progress < 1) requestAnimationFrame(updateCounter);
+          else el.textContent = isFloat ? target.toFixed(1) : Math.round(target);
+        }
+        requestAnimationFrame(updateCounter);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => observer.observe(c));
+
+  // ===== SCROLL REVEAL =====
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.bg-slate-800\\/20, .bg-slate-800\\/30, .bg-slate-900\\/50').forEach(el => {
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
+
+  // ===== AGENT CARD CLICK (workflow animation) =====
+  document.querySelectorAll('.agent-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const name = this.querySelector('h4')?.textContent || 'Agent';
+      showToast(`🤖 ${name} workflow: Processing...`);
+    });
+  });
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const existing = document.querySelector('.toast-float');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'toast-float fixed bottom-24 right-4 bg-slate-800 text-white px-6 py-3 rounded-xl shadow-lg z-50 text-sm max-w-xs border border-slate-700';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  console.log('🏕️ CloudTentO Investor Portal loaded.');
+})();
+</script>
+
+</body>
+</html>
